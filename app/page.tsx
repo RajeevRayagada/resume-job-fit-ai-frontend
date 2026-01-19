@@ -42,7 +42,9 @@ export default function Home() {
       const data = await res.json();
       setResult(data);
     } catch (e: any) {
-      setError(e.message || "Failed to fetch");
+      setError(
+        "Backend is waking up (free hosting). Please wait 10–30 seconds and try again."
+      );
     } finally {
       setLoading(false);
     }

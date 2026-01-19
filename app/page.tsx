@@ -42,57 +42,55 @@ export default function Home() {
       const data = await res.json();
       setResult(data);
     } catch (e: any) {
-      setError(e.message);
+      setError(e.message || "Failed to fetch");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <main className="min-h-screen bg-white p-6 text-black">
+    <main className="min-h-screen bg-gray-50 p-6 text-gray-900">
       <div className="mx-auto max-w-3xl space-y-6">
-        <h1 className="text-3xl font-semibold text-black">
+        <h1 className="text-3xl font-semibold">
           Resume Job Fit Analyzer
         </h1>
 
-        <p className="text-gray-800">
+        <p className="text-gray-600">
           Paste your resume and a job description to see how well they match.
         </p>
 
-        <div className="space-y-4">
-          <textarea
-            className="w-full rounded border border-gray-300 bg-white p-3 text-black placeholder-gray-500"
-            rows={6}
-            placeholder="Paste your resume here..."
-            value={resume}
-            onChange={(e) => setResume(e.target.value)}
-          />
+        <textarea
+          className="w-full rounded border p-3 text-gray-900"
+          rows={6}
+          placeholder="Paste your resume here..."
+          value={resume}
+          onChange={(e) => setResume(e.target.value)}
+        />
 
-          <textarea
-            className="w-full rounded border border-gray-300 bg-white p-3 text-black placeholder-gray-500"
-            rows={6}
-            placeholder="Paste the job description here..."
-            value={jd}
-            onChange={(e) => setJd(e.target.value)}
-          />
+        <textarea
+          className="w-full rounded border p-3 text-gray-900"
+          rows={6}
+          placeholder="Paste the job description here..."
+          value={jd}
+          onChange={(e) => setJd(e.target.value)}
+        />
 
-          <button
-            onClick={analyze}
-            disabled={loading}
-            className="rounded bg-black px-4 py-2 text-white disabled:opacity-50"
-          >
-            {loading ? "Analyzing..." : "Analyze"}
-          </button>
-        </div>
+        <button
+          onClick={analyze}
+          disabled={loading}
+          className="rounded bg-black px-4 py-2 text-white disabled:opacity-50"
+        >
+          {loading ? "Analyzing..." : "Analyze"}
+        </button>
 
         {error && (
-          <div className="rounded border border-red-400 bg-red-50 p-3 text-red-700">
+          <div className="rounded border border-red-300 bg-red-50 p-3 text-red-700">
             {error}
           </div>
         )}
 
         {result && (
-          <div className="space-y-4 rounded border border-gray-300 bg-white p-4 text-black">
+          <div className="space-y-4 rounded border bg-white p-4">
             <div className="text-xl font-medium">
               Match Score: {result.match_score}%
             </div>

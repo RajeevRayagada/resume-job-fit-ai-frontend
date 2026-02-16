@@ -1,16 +1,17 @@
 # Resume Job Fit AI
 
-Full-stack AI-powered application that evaluates compatibility between resumes and job descriptions using embedding-based NLP similarity scoring.
+Full-stack AI-powered application that evaluates compatibility between resumes and job descriptions using structured LLM-based analysis.
 
-Live Demo: https://resume-job-fit-ai-frontend.vercel.app
+Live Demo:  
+https://resume-job-fit-ai-frontend.vercel.app
 
 ---
 
 ## Overview
 
-Resume Job Fit AI analyzes how well a candidate’s resume aligns with a given job description. It uses transformer-based embeddings and cosine similarity to compute a match score and provide actionable feedback.
+Resume Job Fit AI analyzes how well a candidate’s resume aligns with a job description using a large language model (LLM). Instead of relying on keyword matching or traditional similarity metrics, the system uses prompt-engineered evaluation to generate structured insights.
 
-The system is designed with a clean frontend-backend separation and deployed using modern cloud platforms.
+The backend enforces strict JSON validation to ensure reliable and consistent responses.
 
 ---
 
@@ -19,31 +20,50 @@ The system is designed with a clean frontend-backend separation and deployed usi
 ### Frontend
 - Next.js (TypeScript)
 - Deployed on Vercel
-- Handles user input, API communication, and result rendering
+- Handles user input and result rendering
+- Communicates with backend via REST API
 
 ### Backend
 - FastAPI (Python)
 - Deployed on Render (Free Tier)
-- REST API for resume-job analysis
-- Handles NLP processing and similarity scoring
+- Integrates with OpenRouter API
+- Uses GPT-4o-mini for structured evaluation
+- Validates output using Pydantic schemas
 
-### NLP Pipeline
-- Text preprocessing
-- Sentence-transformer embeddings
-- Cosine similarity computation
-- Structured response generation
+---
+
+## AI Evaluation Engine
+
+The system uses:
+
+- OpenRouter integration
+- GPT-4o-mini model
+- Prompt-engineered structured output
+- Strict JSON schema validation
+
+The model is instructed to return ONLY:
+
+- match_score (integer 0–100)
+- strengths (list of strings)
+- missing_skills (list of strings)
+- suggestions (list of strings)
+
+The backend validates the structure using Pydantic before returning the response to the frontend.
+
+This ensures reliability even when working with probabilistic LLM outputs.
 
 ---
 
 ## System Flow
 
 1. User pastes resume text and job description.
-2. Frontend sends a POST request to backend API.
-3. Backend preprocesses and cleans the text.
-4. Embeddings are generated using transformer model.
-5. Cosine similarity is calculated between resume and job vectors.
-6. Match score and insights are returned as JSON.
-7. Frontend renders:
+2. Frontend sends POST request to backend.
+3. Backend forwards structured prompt to GPT-4o-mini via OpenRouter.
+4. Model analyzes contextual alignment.
+5. Model returns structured JSON.
+6. Backend validates JSON schema.
+7. Validated response is returned to frontend.
+8. Frontend displays:
    - Match score
    - Strengths
    - Missing skills
@@ -54,11 +74,12 @@ The system is designed with a clean frontend-backend separation and deployed usi
 ## Features
 
 - Resume text input
-- Job description parsing
-- Embedding-based similarity scoring
+- Job description analysis
+- LLM-based contextual evaluation
+- Strict schema validation using Pydantic
 - RESTful API architecture
+- CORS configuration for secure cross-origin requests
 - Cold start handling (Render free tier awareness)
-- Clean and responsive UI
 
 ---
 
@@ -77,21 +98,34 @@ Backend:
 
 ## Technical Highlights
 
-- Full-stack architecture (Frontend + Backend separation)
-- Embedding-based semantic similarity instead of keyword matching
-- Production deployment using modern cloud platforms
-- API-based integration model
-- Error handling and reliability considerations
+- Full-stack architecture (decoupled frontend and backend)
+- LLM-based structured reasoning instead of keyword matching
+- Schema validation to prevent malformed AI responses
+- Production deployment on modern cloud platforms
+- Error handling for model and network failures
+
+---
+
+## Design Decisions
+
+Why LLM-based evaluation instead of TF-IDF or cosine similarity?
+
+- Context-aware reasoning beyond keyword overlap
+- Ability to evaluate soft skills and experience alignment
+- More flexible scoring without manual feature engineering
+
+To ensure reliability, the system enforces strict JSON validation before returning responses.
 
 ---
 
 ## Future Improvements
 
 - Resume PDF parsing
-- Skill extraction using Named Entity Recognition
-- Weight-based scoring by job requirements
-- Authentication layer
-- Scalable deployment (Docker + container orchestration)
+- Rate limiting and authentication
+- Model fallback mechanisms
+- Cost monitoring and caching
+- Dockerized deployment for scalable hosting
+- Hybrid scoring (LLM + embedding similarity)
 
 ---
 
